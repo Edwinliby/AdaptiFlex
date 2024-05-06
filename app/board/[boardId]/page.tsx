@@ -1,6 +1,6 @@
 import { Room } from "@/components/room";
 
-import Canvas from "./_components/canvas";
+import WorkSpace from "./_components/workSpace";
 import { Loading } from "./_components/loading";
 
 interface BoardIdPageProps {
@@ -14,7 +14,7 @@ const BoardIdPage = ({
 }: BoardIdPageProps) => {
     return (
         <Room roomId={params.boardId} fallback={<Loading />}>
-            <Canvas boardId={params.boardId} />
+            <WorkSpace boardId={params.boardId} />
         </Room>
     );
 };

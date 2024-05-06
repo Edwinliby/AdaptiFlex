@@ -1,9 +1,15 @@
 import React from 'react'
+import Image from 'next/image'
 
 export default function Loading() {
     return (
-        <div className='h-full w-full flex flex-col justify-center items-center'>
-            Loading
+        <div className='h-full w-full flex flex-col  justify-center items-center'>
+            <Image
+                src="/adaptiFlex.svg"
+                alt="Logo"
+                height={60}
+                width={60}
+            />
         </div>
     )
 }

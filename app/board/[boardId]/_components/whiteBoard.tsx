@@ -448,13 +448,8 @@ export const WhiteBoard = ({ boardId }: WhiteBoardProps) => {
   }, [deleteLayers, history]);
 
 
-
-
-
   return (
-    <main
-      className="h-full w-[50%] relative bg-neutral-100 touch-none"
-    >
+    <main className="h-full w-full relative bg-neutral-100 touch-none overflow-hidden">
       <Info boardId={boardId} />
 
       <Toolbar
@@ -470,7 +465,7 @@ export const WhiteBoard = ({ boardId }: WhiteBoardProps) => {
         setLastUsedColor={setLastUsedColor}
       />
       <svg
-        className="h-[100vh] w-[50vw]"
+        className="h-[100vh] w-[100vw]"
         onWheel={onWheel}
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}

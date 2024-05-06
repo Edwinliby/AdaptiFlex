@@ -31,7 +31,7 @@ export const Toolbar = ({
   canRedo,
 }: ToolbarProps) => {
   return (
-    <div className="absolute bottom-[2%] flex gap-4 w-full justify-center">
+    <div className="absolute bottom-[3%] flex gap-4 w-full justify-center">
       <div className="bg-white rounded-md p-1.5 flex gap-1 items-center shadow-md">
         <ToolButton
           label="Select"
