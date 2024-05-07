@@ -74,7 +74,7 @@ export const Actions = ({
           <Pencil className="h-4 w-4 mr-2" />
           Rename
         </DropdownMenuItem>
-        <ConfirmModal
+        {/* <ConfirmModal
           header="Delete board?"
           description="This will delete the board and all of its contents."
           disabled={pending}
@@ -87,7 +87,7 @@ export const Actions = ({
             <Trash2 className="h-4 w-4 mr-2" />
             Delete
           </Button>
-        </ConfirmModal>
+        </ConfirmModal> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -7,8 +7,8 @@ export default function Loading() {
             <Image
                 src="/adaptiFlex.svg"
                 alt="Logo"
-                height={60}
-                width={60}
+                height={80}
+                width={80}
             />
         </div>
     )

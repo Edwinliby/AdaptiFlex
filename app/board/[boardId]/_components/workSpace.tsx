@@ -14,8 +14,11 @@ import { Participants } from "./participants";
 import { connectionIdToColor } from "@/lib/utils";
 import { WhiteBoard } from "./whiteBoard";
 import { Hint } from '@/components/hint';
+import { jsPDF } from "jspdf";
+import markdownit from 'markdown-it';
+import html2canvas from "html2canvas";
 
-import { Presentation, FileText, Columns2 } from 'lucide-react';
+import { Presentation, FileText, Columns2, FileDown } from 'lucide-react';
 
 interface WorkSpaceProps {
     doc: Y.Doc,
@@ -120,7 +123,6 @@ async function uploadFile(file: File) {
 
 function BlockNote({ doc, provider }: WorkSpaceProps) {
 
-    const [markdown, setMarkdown] = useState<string>("");
     const currentUser = useSelf();
     const editor: BlockNoteEditor = useCreateBlockNote({
         collaboration: {
@@ -138,16 +140,51 @@ function BlockNote({ doc, provider }: WorkSpaceProps) {
         uploadFile,
     });
 
-    const onChange = async () => {
-        // Converts the editor's contents from Block objects to Markdown and store to state.
-        const markdown = await editor.blocksToMarkdownLossy(editor.document);
-        setMarkdown(markdown);
-    };
+    const handleDownloadPDF = useCallback(async () => {
+        const pdf = new jsPDF();
+        const md = new markdownit();
 
-    return <BlockNoteView
-        className="pt-[4rem] w-full h-screen overflow-scroll"
-        theme={lightDefaultTheme}
-        editor={editor}
-        onChange={onChange}
-    />;
+        // Convert markdown to HTML
+        const markdownData = await editor.blocksToMarkdownLossy(editor.document);
+        const htmlData = md.render(markdownData);
+
+        // Create a hidden div to render the HTML content
+        const hiddenDiv = document.createElement("div");
+        hiddenDiv.innerHTML = htmlData;
+        document.body.appendChild(hiddenDiv);
+
+        // Convert the hidden div to canvas
+        html2canvas(hiddenDiv).then(canvas => {
+            const imgData = canvas.toDataURL("image/png");
+
+            // Add image to PDF
+            pdf.addImage(imgData, "PNG", 10, 10);
+
+            // Save the PDF
+            pdf.save("document.pdf");
+
+            // Remove hidden div from DOM
+            document.body.removeChild(hiddenDiv);
+        }).catch(error => {
+            console.error("Error rendering HTML to canvas:", error);
+        });
+    }, [editor]);
+
+    return (
+        <>
+            <BlockNoteView
+                className="pt-[4rem] w-full h-screen overflow-scroll"
+                theme={lightDefaultTheme}
+                editor={editor}
+            />;
+            <Hint label='Download PDF' side="bottom" sideOffset={10}>
+                <button
+                    className="absolute bottom-4 right-[1%] p-2 rounded-md shadow-md"
+                    onClick={handleDownloadPDF}
+                >
+                    <FileDown />
+                </button>
+            </Hint>
+        </>
+    )
 }
