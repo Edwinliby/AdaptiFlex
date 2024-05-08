@@ -13,12 +13,11 @@ import { Info } from "./info";
 import { Participants } from "./participants";
 import { connectionIdToColor } from "@/lib/utils";
 import { WhiteBoard } from "./whiteBoard";
+import { CodeEditor } from "./CodeEditor/codeEditor";
 import { Hint } from '@/components/hint';
 import { jsPDF } from "jspdf";
-import markdownit from 'markdown-it';
-import html2canvas from "html2canvas";
 
-import { Presentation, FileText, Columns2, FileDown } from 'lucide-react';
+import { Presentation, FileText, Columns2, FileDown, Code2 } from 'lucide-react';
 
 interface WorkSpaceProps {
     doc: Y.Doc,
@@ -41,7 +40,6 @@ export default function WorkSpace({ boardId }: WorkSpaceProps) {
     const [provider, setProvider] = useState<any>();
 
     const handleWhiteboardClick = useCallback(() => {
-        console.log("whiteboard");
         setMode('whiteboard');
     }, []);
     const handleEditorClick = useCallback(() => {
@@ -49,6 +47,9 @@ export default function WorkSpace({ boardId }: WorkSpaceProps) {
     }, []);
     const handleBothClick = useCallback(() => {
         setMode('both');
+    }, []);
+    const handleCodeEditorClick = useCallback(() => {
+        setMode('CodeEditor');
     }, []);
 
     // Set up Liveblocks Yjs provider
@@ -81,8 +82,12 @@ export default function WorkSpace({ boardId }: WorkSpaceProps) {
                     <button onClick={handleBothClick}><Columns2 /></button>
                 </Hint>
                 <TabSeparator />
-                <Hint label='Editor' side="bottom" sideOffset={15}>
+                <Hint label='Text-Editor' side="bottom" sideOffset={15}>
                     <button onClick={handleEditorClick}><FileText /></button>
+                </Hint>
+                <TabSeparator />
+                <Hint label='Editor' side="bottom" sideOffset={15}>
+                    <button onClick={handleCodeEditorClick}><Code2 /></button>
                 </Hint>
             </div>
 
@@ -91,6 +96,10 @@ export default function WorkSpace({ boardId }: WorkSpaceProps) {
                 {mode === 'editor' && <>
                     <Info boardId={boardId} />
                     <BlockNote boardId={boardId} doc={doc} provider={provider} />
+                </>}
+                {mode === 'CodeEditor' && <>
+                    <Info boardId={boardId} />
+                    <CodeEditor />
                 </>}
                 {mode === 'both' && (
                     <div className="flex">
@@ -141,33 +150,32 @@ function BlockNote({ doc, provider }: WorkSpaceProps) {
     });
 
     const handleDownloadPDF = useCallback(async () => {
-        const pdf = new jsPDF();
-        const md = new markdownit();
 
-        // Convert markdown to HTML
-        const markdownData = await editor.blocksToMarkdownLossy(editor.document);
-        const htmlData = md.render(markdownData);
+        const htmlData = await editor.blocksToHTMLLossy(editor.document);
 
-        // Create a hidden div to render the HTML content
-        const hiddenDiv = document.createElement("div");
-        hiddenDiv.innerHTML = htmlData;
-        document.body.appendChild(hiddenDiv);
-
-        // Convert the hidden div to canvas
-        html2canvas(hiddenDiv).then(canvas => {
-            const imgData = canvas.toDataURL("image/png");
-
-            // Add image to PDF
-            pdf.addImage(imgData, "PNG", 10, 10);
-
-            // Save the PDF
-            pdf.save("document.pdf");
-
-            // Remove hidden div from DOM
-            document.body.removeChild(hiddenDiv);
-        }).catch(error => {
-            console.error("Error rendering HTML to canvas:", error);
+        // Create a new jsPDF instance
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'px',
+            format: 'letter',
+            putOnlyUsedFonts: true,
+            precision: 16
         });
+
+        pdf.html(htmlData, {
+            callback: (pdf) => {
+                pdf.save("document.pdf");
+            },
+            x: 12,
+            y: 12,
+            html2canvas: {
+                allowTaint: true,
+                useCORS: true,
+                logging: true,
+                canvas: htmlData,
+            },
+        });
+
     }, [editor]);
 
     return (

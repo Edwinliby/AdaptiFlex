@@ -3,8 +3,8 @@
 import { memo } from "react";
 import { shallow } from "@liveblocks/client";
 
-import { 
-  useOthersConnectionIds, 
+import {
+  useOthersConnectionIds,
   useOthersMapped
 } from "@/liveblocks.config";
 import { colorToCss } from "@/lib/utils";
@@ -43,7 +43,7 @@ const Drafts = () => {
               x={0}
               y={0}
               points={other.pencilDraft}
-              fill={other.penColor ? colorToCss (other.penColor) : "#000"}
+              fill={other.penColor ? colorToCss(other.penColor) : "#000"}
             />
           );
         }

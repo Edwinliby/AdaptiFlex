@@ -7,6 +7,7 @@ import {
 import { createRoomContext, createLiveblocksContext } from "@liveblocks/react";
 
 import { Layer, Color } from "@/types/canvas";
+import LiveblocksProvider from "@liveblocks/yjs";
 
 const client = createClient({
   authEndpoint: "/api/liveblocks-auth",
@@ -61,6 +62,7 @@ type Presence = {
   selection: string[];
   pencilDraft: [x: number, y: number, pressure: number][] | null;
   penColor: Color | null;
+  message: string;
 };
 
 // Optionally, Storage represents the shared document that persists in the
@@ -78,16 +80,34 @@ type UserMeta = {
   id?: string,  // Accessible through `user.id`
   info?: {
     name?: string,  // Accessible through `user.info.name`
-    picture?: string,  // Accessible through `user.info.picture`
+    picture?: string, 
+    color?: string,
+     // Accessible through `user.info.picture`
   },  // Accessible through `user.info`
 };
+
+export type UserAwareness = {
+  user?: UserMeta["info"];
+};
+
+export type AwarenessList = [number, UserAwareness][];
 
 // Optionally, the type of custom events broadcast and listened to in this
 // room. Use a union for multiple events. Must be JSON-serializable.
 type RoomEvent = {
   // type: "NOTIFICATION",
   // ...
+  x: number;
+  y: number;
+  value: string;
 };
+
+export type TypedLiveblocksProvider = LiveblocksProvider<
+  Presence,
+  Storage,
+  UserMeta,
+  RoomEvent
+>;
 
 // Optionally, when using Comments, ThreadMetadata represents metadata on
 // each thread. Can only contain booleans, strings, and numbers.
@@ -150,7 +170,7 @@ export const {
 // Project-level hooks, use inside `LiveblocksProvider`
 export const {
   suspense: {
-    LiveblocksProvider,
+    // LiveblocksProvider,
     useMarkInboxNotificationAsRead,
     useMarkAllInboxNotificationsAsRead,
     useInboxNotifications,
