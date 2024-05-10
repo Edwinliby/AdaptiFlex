@@ -3,11 +3,11 @@ import Footer from './_components/footer';
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Adaptiflex",
+  title: "Adaptiflex-Home",
   description: "All-In-One Collaboration and Productivity Platform",
 };
 
-const HomePageLayout = ({ children }: { children: React.ReactNode }) => {
+export default function HomePageLayout({ children }: { children: React.ReactNode }) {
   return (
     <main>
       <Header />
@@ -16,5 +16,3 @@ const HomePageLayout = ({ children }: { children: React.ReactNode }) => {
     </main>
   );
 };
-
-export default HomePageLayout;

@@ -12,10 +12,11 @@ export const EmptyOrg = () => {
   return (
     <div className="h-full flex flex-col items-center justify-center">
       <Image
-        src="/next.svg"
+        src="/adaptiFlex.svg"
         alt="Empty"
         height={200}
         width={200}
+        className='aspect-auto'
       />
       <h2 className="text-2xl font-semibold mt-6">
         Welcome to Board

@@ -31,10 +31,11 @@ export const EmptyBoards = () => {
   return (
     <div className="h-full flex flex-col items-center justify-center">
       <Image
-        src="/note.svg"
+        src="/adaptiFlex.svg"
         height={110}
         width={110}
         alt="Empty"
+        className="aspect-auto"
       />
       <h2 className="text-2xl font-semibold mt-6">
         Create your first board!

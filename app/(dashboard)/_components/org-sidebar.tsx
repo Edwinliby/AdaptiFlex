@@ -28,6 +28,8 @@ export const OrgSidebar = () => {
             alt="Logo"
             height={40}
             width={40}
+            priority
+            className='aspect-auto'
           />
           <span className={cn(
             "font-semibold text-2xl",

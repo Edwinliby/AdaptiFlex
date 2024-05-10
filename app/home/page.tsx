@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+// import Image from 'next/image';
 import Link from 'next/link';
 import styles from './page.module.css'
 
@@ -30,18 +30,16 @@ const HomePage = () => {
           Productivity Platform
         </h1>
         <div className="flex gap-4">
-          <Link href={'/login'}>
+          <Link href='https://humble-glowworm-59.accounts.dev/sign-in'>
             <Button
               variant="default"
-              className="text-[#FF471F] hover:bg-white hover:text-[#FF471F] border-[#FF471F] hover:border-[#FF471F]"
             >
-              Login
+              Sign in
             </Button>
           </Link>
-          <Link href="/signup">
+          <Link href='https://humble-glowworm-59.accounts.dev/sign-up'>
             <Button
               variant="default"
-              className="bg-[#FF471F] text-white border-[#FF471F] hover:bg-[#FF471F]  hover:border-[#FF471F]"
             >
               Sign Up
             </Button>
@@ -62,6 +60,7 @@ const HomePage = () => {
         alt='banner'
         width={1500}
         height={1500}
+        priority
         className={styles.banner}
       /> */}
     </section>

@@ -9,6 +9,8 @@ export default function Loading() {
                 alt="Logo"
                 height={80}
                 width={80}
+                priority
+                className='w-auto h-auto'
             />
         </div>
     )
