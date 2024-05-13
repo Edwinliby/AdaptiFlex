@@ -35,6 +35,8 @@ export const Actions = ({
   const { onOpen } = useRenameModal();
   const { mutate, pending } = useApiMutation(api.board.remove);
 
+  const insideBoard = window.location.pathname.includes(`/board/${id}`);
+
   const onCopyLink = () => {
     navigator.clipboard.writeText(
       `${window.location.origin}/board/${id}`,
@@ -74,20 +76,22 @@ export const Actions = ({
           <Pencil className="h-4 w-4 mr-2" />
           Rename
         </DropdownMenuItem>
-        {/* <ConfirmModal
-          header="Delete board?"
-          description="This will delete the board and all of its contents."
-          disabled={pending}
-          onConfirm={onDelete}
-        >
-          <Button
-            variant="ghost"
-            className="p-3 cursor-pointer text-sm w-full justify-start font-normal"
+        {!insideBoard && (
+          <ConfirmModal
+            header="Delete board?"
+            description="This will delete the board and all of its contents."
+            disabled={pending}
+            onConfirm={onDelete}
           >
-            <Trash2 className="h-4 w-4 mr-2" />
-            Delete
-          </Button>
-        </ConfirmModal> */}
+            <Button
+              variant="ghost"
+              className="p-3 cursor-pointer text-sm w-full justify-start font-normal"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete
+            </Button>
+          </ConfirmModal>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
